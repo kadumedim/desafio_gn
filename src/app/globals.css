@@ -15,7 +15,9 @@
 }
 
 body {
+  
   color: var(--foreground);
   background: var(--background);
   font-family: 'Space Grotesk', Arial, Helvetica, sans-serif;
+  font-size: 18px;
 }
