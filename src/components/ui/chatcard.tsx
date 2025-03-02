@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Command, Moon, Settings, Sun } from "lucide-react"
+import { Moon, Settings, Sun, Eraser } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
@@ -111,13 +111,12 @@ export function ChatCard() {
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={(event) => {
-                event.preventDefault()
+              onSelect={() => {
                 setCommandLogs([])
               }}
             >
               <div className="flex items-center gap-2">
-                <Command className="h-4 w-4" />
+                <Eraser className="h-4 w-4" />
                 Limpar histórico
               </div>
             </DropdownMenuItem>
@@ -194,10 +193,7 @@ export function ChatCard() {
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-muted-foreground">
-          Dica: Clique no ícone <Command className="h-3 w-3 inline" /> para ver
-          todos os comandos disponíveis.
-        </p>
+       
       </CardFooter>
     </Card>
   )
