@@ -19,7 +19,10 @@ import {
 } from "@/components/ui/table"
 
 interface CommandDialogProps {
-  commands: Record<string, string>
+  commands: Record<string, {
+    description: string
+    example: string
+  }>
 }
 
 export function CommandDialog({ commands }: CommandDialogProps) {
@@ -47,13 +50,15 @@ export function CommandDialog({ commands }: CommandDialogProps) {
               <TableRow>
                 <TableHead className="w-[100px]">Comando</TableHead>
                 <TableHead>Descrição</TableHead>
+                <TableHead>Exemplo</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Object.entries(commands).map(([cmd, desc]) => (
+              {Object.entries(commands).map(([cmd, info]) => (
                 <TableRow key={cmd}>
                   <TableCell className="font-mono font-bold">{cmd}</TableCell>
-                  <TableCell>{desc}</TableCell>
+                  <TableCell>{info.description}</TableCell>
+                  <TableCell className="font-mono">{info.example}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
