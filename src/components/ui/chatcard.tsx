@@ -8,37 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Moon, Settings, Sun, Eraser } from "lucide-react"
-import { useTheme } from "next-themes"
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
 import { useState, KeyboardEvent, useRef, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { SettingsMenu } from "@/components/ui/settings-menu"
+import { CommandDialog } from "@/components/ui/command-dialog"
 
-// Define Linux commands and their descriptions
 const linuxCommands = {
   ls: "Lista arquivos e diretórios no diretório atual.",
   cd: "Muda o diretório atual para o especificado.",
@@ -48,7 +24,6 @@ const linuxCommands = {
 }
 
 export function ChatCard() {
-  const { theme, setTheme } = useTheme()
   const [command, setCommand] = useState("")
   const [commandLogs, setCommandLogs] = useState<string[]>([])
   const scrollAreaRef = useRef<HTMLDivElement>(null)
@@ -88,40 +63,7 @@ export function ChatCard() {
           <CardDescription>Explore e teste comandos de Linux!</CardDescription>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-[1.2rem] w-[1.2rem]" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              onSelect={(event) => {
-                event.preventDefault()
-                setTheme(theme === "dark" ? "light" : "dark")
-              }}
-            >
-              <div className="flex items-center gap-2">
-                {theme === "dark" ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-                Mudar tema
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onSelect={() => {
-                setCommandLogs([])
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Eraser className="h-4 w-4" />
-                Limpar histórico
-              </div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <SettingsMenu onClearHistory={() => setCommandLogs([])} />
       </CardHeader>
       <Separator />
       <CardContent className="p-6">
@@ -135,44 +77,7 @@ export function ChatCard() {
               className="font-mono pr-24"
               autoComplete="off"
             />
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 text-xs px-2 py-1 h-auto"
-                >
-                  Ver Comandos
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Comandos Linux Disponíveis</DialogTitle>
-                  <DialogDescription>
-                    Lista de comandos que você pode testar no terminal.
-                  </DialogDescription>
-                </DialogHeader>
-               
-                <div className="py-4">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[100px]">Comando</TableHead>
-                        <TableHead>Descrição</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {Object.entries(linuxCommands).map(([cmd, desc]) => (
-                        <TableRow key={cmd}>
-                          <TableCell className="font-mono font-bold">{cmd}</TableCell>
-                          <TableCell>{desc}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <CommandDialog commands={linuxCommands} />
           </div>
 
           <ScrollArea className="h-[200px] w-full rounded-md border p-4 font-mono text-sm">
