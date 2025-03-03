@@ -12,6 +12,7 @@ O usuário também pode adicionar e remover comandos (salvo no localstorage).
 - **Tailwind CSS** - Framework CSS utility-first
 - **Shadcn/ui** - Componentes elegantes e acessíveis
 - **Lucide** - Biblioteca de ícones bonitos e consistentes
+- **Bun** - Runtime javascript extremamente rápido e leve
 
 ## 🌐 Deploy
 
