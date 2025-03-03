@@ -10,7 +10,7 @@ O usuário também pode adicionar e remover comandos (salvo no localstorage).
 - **Next.js** - Framework React para produção
 - **TypeScript** - Superset JavaScript com tipagem estática
 - **Tailwind CSS** - Framework CSS utility-first
-- **Shadcn/ui** - Componentes elegantes e acessíveis
+- **Shadcn/ui** - Componentes primitivos modulares
 - **Lucide** - Biblioteca de ícones bonitos e consistentes
 - **Bun** - Runtime javascript extremamente rápido e leve
 

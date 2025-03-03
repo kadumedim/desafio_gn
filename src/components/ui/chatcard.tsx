@@ -80,7 +80,7 @@ export function ChatCard() {
         setCommands(defaultCommands)
         return
       }
-      
+
       const parsedCommands = JSON.parse(storedCommands)
       setCommands(parsedCommands)
     } catch (error) {
@@ -96,6 +96,7 @@ export function ChatCard() {
     const cmd = command.trim().split(" ")[0].toLowerCase()
     const newLogs: string[] = []
 
+    // Coloca o comando digitado no histórico antes de verificar a existencia
     newLogs.push(`$ ${command}`)
 
     if (cmd in commands) {
