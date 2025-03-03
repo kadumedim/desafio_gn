@@ -49,6 +49,17 @@ export function ChatCard() {
   const [command, setCommand] = useState("")
   const [commandLogs, setCommandLogs] = useState<string[]>([])
   const [commands, setCommands] = useState<LinuxCommands>(defaultCommands)
+
+  const updateCommands = (newCommands: LinuxCommands) => {
+    setCommands(newCommands)
+    localStorage.setItem('linuxCommands', JSON.stringify(newCommands))
+  }
+
+  const resetCommands = () => {
+    setCommands(defaultCommands)
+    localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
+  }
+
   const viewportRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll
@@ -62,17 +73,17 @@ export function ChatCard() {
   // Load commands
   useEffect(() => {
     try {
-      console.log("Salvando no local storage")
       const storedCommands = localStorage.getItem('linuxCommands')
       if (storedCommands) {
         const parsedCommands = JSON.parse(storedCommands)
         setCommands(parsedCommands)
-      }
-      else {
+      } else {
         localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
+        setCommands(defaultCommands)
       }
     } catch (error) {
       console.error('Error loading stored commands:', error)
+      localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
       setCommands(defaultCommands)
     }
   }, [])
@@ -83,10 +94,8 @@ export function ChatCard() {
     const cmd = command.trim().split(" ")[0].toLowerCase();
     const newLogs: string[] = [];
     
-    // Add command to logs first
     newLogs.push(`$ ${command}`);
     
-    // Add command response
     if (cmd in commands) {
       newLogs.push(`Descrição: ${commands[cmd].description}`);
       newLogs.push(`Exemplo: ${commands[cmd].example}`);
@@ -94,7 +103,6 @@ export function ChatCard() {
       newLogs.push(`Comando não reconhecido: ${cmd}`);
     }
     
-    // Update logs (add new logs at the end for chronological display)
     setCommandLogs(prev => [...prev, ...newLogs]);
     setCommand("");
   }
@@ -107,7 +115,7 @@ export function ChatCard() {
           <CardDescription>Explore e teste comandos de Linux!</CardDescription>
         </div>
 
-        <SettingsMenu onClearHistory={() => setCommandLogs([])} />
+        <SettingsMenu onClearHistory={() => setCommandLogs([])} onResetCommands={resetCommands} />
       </CardHeader>
       <Separator />
       <CardContent className="p-6">
@@ -121,7 +129,7 @@ export function ChatCard() {
               className="font-mono pr-24"
               autoComplete="off"
             />
-            <CommandDialog commands={commands} />
+            <CommandDialog commands={commands} onUpdateCommands={updateCommands} />
           </div>
 
           <ScrollArea className="h-[200px] w-full rounded-md border p-4 font-mono text-sm">

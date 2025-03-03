@@ -6,15 +6,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Moon, Settings, Sun, Eraser } from "lucide-react"
+import { Moon, Settings, Sun, Eraser, RotateCcw } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 
 interface SettingsMenuProps {
   onClearHistory: () => void
+  onResetCommands: () => void
 }
 
-export function SettingsMenu({ onClearHistory }: SettingsMenuProps) {
+export function SettingsMenu({ onClearHistory, onResetCommands }: SettingsMenuProps) {
   const { theme, setTheme } = useTheme()
 
   return (
@@ -44,6 +45,12 @@ export function SettingsMenu({ onClearHistory }: SettingsMenuProps) {
           <div className="flex items-center gap-2">
             <Eraser className="h-4 w-4" />
             Limpar histórico
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={onResetCommands}>
+          <div className="flex items-center gap-2">
+            <RotateCcw className="h-4 w-4" />
+            Restaurar comandos
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
