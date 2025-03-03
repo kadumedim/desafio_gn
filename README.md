@@ -2,7 +2,8 @@
 
 ## Sobre o Projeto
 
-Este é um projeto moderno e responsivo desenvolvido com as mais recentes tecnologias web. Combinando uma interface elegante com componentes reutilizáveis e uma experiência de usuário fluida.
+Guia de comandos interativo, consiste em mostrar comandos Linux ao usuário.
+O usuário também pode adicionar e remover comandos (salvo no localstorage).
 
 ## 🛠 Tecnologias Utilizadas
 

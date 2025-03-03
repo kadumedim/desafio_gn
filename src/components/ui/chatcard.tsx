@@ -18,24 +18,24 @@ import { CommandDialog } from "@/components/ui/command-dialog"
 const defaultCommands = {
   ls: {
     description: "Lista arquivos e diretórios no diretório atual.",
-    example: "ls -l (lista detalhada) ou ls /pasta (lista conteúdo da pasta)"
+    example: "ls -l (lista detalhada) ou ls /pasta (lista conteúdo da pasta)",
   },
   cd: {
     description: "Muda o diretório atual para o especificado.",
-    example: "cd /home ou cd .. (volta um diretório)"
+    example: "cd /home ou cd .. (volta um diretório)",
   },
   mkdir: {
     description: "Cria um novo diretório com o nome especificado.",
-    example: "mkdir nova_pasta ou mkdir -p pasta1/pasta2"
+    example: "mkdir nova_pasta ou mkdir -p pasta1/pasta2",
   },
   rm: {
     description: "Remove arquivos ou diretórios.",
-    example: "rm arquivo.txt ou rm -r pasta (remove recursivamente)"
+    example: "rm arquivo.txt ou rm -r pasta (remove recursivamente)",
   },
   grep: {
     description: "Busca por padrões em arquivos de texto.",
-    example: "grep 'palavra' arquivo.txt ou grep -r 'texto' ."
-  }
+    example: "grep 'palavra' arquivo.txt ou grep -r 'texto' .",
+  },
 }
 
 type LinuxCommand = {
@@ -52,19 +52,19 @@ export function ChatCard() {
 
   const updateCommands = (newCommands: LinuxCommands) => {
     setCommands(newCommands)
-    localStorage.setItem('linuxCommands', JSON.stringify(newCommands))
+    localStorage.setItem("linuxCommands", JSON.stringify(newCommands))
   }
 
   const resetCommands = () => {
     setCommands(defaultCommands)
-    localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
+    localStorage.setItem("linuxCommands", JSON.stringify(defaultCommands))
   }
 
   const viewportRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll
   useEffect(() => {
-    const viewport = document.querySelector('[data-radix-scroll-area-viewport]')
+    const viewport = document.querySelector("[data-radix-scroll-area-viewport]")
     if (viewport) {
       viewport.scrollTop = viewport.scrollHeight
     }
@@ -73,38 +73,40 @@ export function ChatCard() {
   // Load commands
   useEffect(() => {
     try {
-      const storedCommands = localStorage.getItem('linuxCommands')
-      if (storedCommands) {
-        const parsedCommands = JSON.parse(storedCommands)
-        setCommands(parsedCommands)
-      } else {
-        localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
+      const storedCommands = localStorage.getItem("linuxCommands")
+
+      if (!storedCommands) {
+        localStorage.setItem("linuxCommands", JSON.stringify(defaultCommands))
         setCommands(defaultCommands)
+        return
       }
+      
+      const parsedCommands = JSON.parse(storedCommands)
+      setCommands(parsedCommands)
     } catch (error) {
-      console.error('Error loading stored commands:', error)
-      localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
+      console.error("Error loading stored commands:", error)
+      localStorage.setItem("linuxCommands", JSON.stringify(defaultCommands))
       setCommands(defaultCommands)
     }
   }, [])
 
   const handleCommandSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter" || !command.trim()) return;
-    
-    const cmd = command.trim().split(" ")[0].toLowerCase();
-    const newLogs: string[] = [];
-    
-    newLogs.push(`$ ${command}`);
-    
+    if (e.key !== "Enter" || !command.trim()) return
+
+    const cmd = command.trim().split(" ")[0].toLowerCase()
+    const newLogs: string[] = []
+
+    newLogs.push(`$ ${command}`)
+
     if (cmd in commands) {
-      newLogs.push(`Descrição: ${commands[cmd].description}`);
-      newLogs.push(`Exemplo: ${commands[cmd].example}`);
+      newLogs.push(`Descrição: ${commands[cmd].description}`)
+      newLogs.push(`Exemplo: ${commands[cmd].example}`)
     } else {
-      newLogs.push(`Comando não reconhecido: ${cmd}`);
+      newLogs.push(`Comando não reconhecido: ${cmd}`)
     }
-    
-    setCommandLogs(prev => [...prev, ...newLogs]);
-    setCommand("");
+
+    setCommandLogs((prev) => [...prev, ...newLogs])
+    setCommand("")
   }
 
   return (
@@ -115,7 +117,10 @@ export function ChatCard() {
           <CardDescription>Explore e teste comandos de Linux!</CardDescription>
         </div>
 
-        <SettingsMenu onClearHistory={() => setCommandLogs([])} onResetCommands={resetCommands} />
+        <SettingsMenu
+          onClearHistory={() => setCommandLogs([])}
+          onResetCommands={resetCommands}
+        />
       </CardHeader>
       <Separator />
       <CardContent className="p-6">
@@ -129,7 +134,10 @@ export function ChatCard() {
               className="font-mono pr-24"
               autoComplete="off"
             />
-            <CommandDialog commands={commands} onUpdateCommands={updateCommands} />
+            <CommandDialog
+              commands={commands}
+              onUpdateCommands={updateCommands}
+            />
           </div>
 
           <ScrollArea className="h-[200px] w-full rounded-md border p-4 font-mono text-sm">
@@ -149,9 +157,7 @@ export function ChatCard() {
           </ScrollArea>
         </div>
       </CardContent>
-      <CardFooter>
-       
-      </CardFooter>
+      <CardFooter></CardFooter>
     </Card>
   )
 }
