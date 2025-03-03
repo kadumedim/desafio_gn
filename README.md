@@ -18,7 +18,7 @@ O usuário também pode adicionar e remover comandos (salvo no localstorage).
 
 O projeto está atualmente hospedado na Railway e pode ser acessado através do seguinte link:
 
-_https://desafiogn-production.up.railway.app/_
+https://desafiogn-production.up.railway.app/
 
 _O site é atualizado e rebuildado a cada commit no branch main._
 
