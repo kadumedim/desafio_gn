@@ -49,29 +49,33 @@ export function ChatCard() {
   const [command, setCommand] = useState("")
   const [commandLogs, setCommandLogs] = useState<string[]>([])
   const [commands, setCommands] = useState<LinuxCommands>(defaultCommands)
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
+  const viewportRef = useRef<HTMLDivElement>(null)
 
-  // Load commands from localStorage on mount
+  // Auto-scroll
+  useEffect(() => {
+    const viewport = document.querySelector('[data-radix-scroll-area-viewport]')
+    if (viewport) {
+      viewport.scrollTop = viewport.scrollHeight
+    }
+  }, [commandLogs])
+
+  // Load commands
   useEffect(() => {
     try {
+      console.log("Salvando no local storage")
       const storedCommands = localStorage.getItem('linuxCommands')
       if (storedCommands) {
         const parsedCommands = JSON.parse(storedCommands)
         setCommands(parsedCommands)
       }
+      else {
+        localStorage.setItem('linuxCommands', JSON.stringify(defaultCommands))
+      }
     } catch (error) {
       console.error('Error loading stored commands:', error)
-      // If there's an error, use default commands
       setCommands(defaultCommands)
     }
   }, [])
-
-  // Auto-scroll to bottom when logs update
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
-    }
-  }, [commandLogs])
 
   const handleCommandSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter" || !command.trim()) return;
@@ -90,8 +94,8 @@ export function ChatCard() {
       newLogs.push(`Comando não reconhecido: ${cmd}`);
     }
     
-    // Update logs (add new logs at the beginning for chronological display)
-    setCommandLogs(prev => [...newLogs, ...prev]);
+    // Update logs (add new logs at the end for chronological display)
+    setCommandLogs(prev => [...prev, ...newLogs]);
     setCommand("");
   }
 
@@ -121,9 +125,9 @@ export function ChatCard() {
           </div>
 
           <ScrollArea className="h-[200px] w-full rounded-md border p-4 font-mono text-sm">
-            <div ref={scrollAreaRef}>
+            <div ref={viewportRef} className="h-full">
               {commandLogs.length > 0 ? (
-                [...commandLogs].reverse().map((log, index) => (
+                commandLogs.map((log, index) => (
                   <div key={index} className="pb-2">
                     {log}
                   </div>
