@@ -22,7 +22,7 @@ _https://desafiogn-production.up.railway.app/_
 
 1. Clone o repositório:
 ```bash
-git clone [url-do-repositório]
+git clone [https://github.com/kadumedim/desafio_gn]
 ```
 
 2. Instale as dependências:
