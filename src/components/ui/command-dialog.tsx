@@ -33,7 +33,6 @@ interface CommandDialogProps {
 }
 
 export function CommandDialog({ commands, onUpdateCommands }: CommandDialogProps) {
-  // Remove local state and use parent state directly
   const [newCommand, setNewCommand] = useState({
     name: "",
     description: "",
