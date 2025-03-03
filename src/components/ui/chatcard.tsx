@@ -53,16 +53,16 @@ export function ChatCard() {
 
   // Load commands from localStorage on mount
   useEffect(() => {
-    const storedCommands = localStorage.getItem('linuxCommands')
-    if (storedCommands) {
-      try {
+    try {
+      const storedCommands = localStorage.getItem('linuxCommands')
+      if (storedCommands) {
         const parsedCommands = JSON.parse(storedCommands)
         setCommands(parsedCommands)
-      } catch (error) {
-        console.error('Error parsing stored commands:', error)
-        // If there's an error parsing, use default commands
-        setCommands(defaultCommands)
       }
+    } catch (error) {
+      console.error('Error loading stored commands:', error)
+      // If there's an error, use default commands
+      setCommands(defaultCommands)
     }
   }, [])
 
@@ -74,21 +74,25 @@ export function ChatCard() {
   }, [commandLogs])
 
   const handleCommandSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && command.trim()) {
-      const cmd = command.trim().split(" ")[0].toLowerCase()
-      if (cmd in commands) {
-        setCommandLogs((prev) => [
-          `Exemplo: ${commands[cmd].example}`,
-          `Descrição: ${commands[cmd].description}`,
-          `$ ${command}`,
-          ...prev
-        ])
-      } else {
-        setCommandLogs((prev) => [...prev, `$ ${command}`, `Comando não reconhecido: ${cmd}`])
-      }
-
-      setCommand("")
+    if (e.key !== "Enter" || !command.trim()) return;
+    
+    const cmd = command.trim().split(" ")[0].toLowerCase();
+    const newLogs: string[] = [];
+    
+    // Add command to logs first
+    newLogs.push(`$ ${command}`);
+    
+    // Add command response
+    if (cmd in commands) {
+      newLogs.push(`Descrição: ${commands[cmd].description}`);
+      newLogs.push(`Exemplo: ${commands[cmd].example}`);
+    } else {
+      newLogs.push(`Comando não reconhecido: ${cmd}`);
     }
+    
+    // Update logs (add new logs at the beginning for chronological display)
+    setCommandLogs(prev => [...newLogs, ...prev]);
+    setCommand("");
   }
 
   return (
