@@ -20,6 +20,8 @@ O projeto está atualmente hospedado na Railway e pode ser acessado através do 
 
 _https://desafiogn-production.up.railway.app/_
 
+_O site é atualizado e rebuildado a cada commit no branch main._
+
 ## 💻 Instalação
 
 1. Clone o repositório:
